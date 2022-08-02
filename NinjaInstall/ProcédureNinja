@@ -1,0 +1,28 @@
+rpm -Uvh "https://labs.consol.de/repo/stable/rhel7/i386/labs-consol-stable.rhel7.noarch.rpm"
+yum install naemon
+setenforce 0
+systemctl start naemon
+systemctl start httpd
+
+
+yum install gcc autoconf automake check-devel glib2-devel libdbi-devel libtool naemon-devel gperf libdbi-dbd-mysql mysql-libs mariadb mariadb-server git vim
+
+git clone https://github.com/op5/merlin.git
+cd merlin
+edit install-merlin.sh
+mkdir -pv /usr/local/share/merlin/
+cp -r sql/ /usr/local/share/merlin/
+
+
+yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+
+yum install yum-utils
+yum-config-manager --enable remi-php70   [Install PHP 7.0]
+
+vim /etc/httpd/conf.d/ninja-httpd.conf
+Alias /monitor /var/www/html/ninja
+Alias /ninja /var/www/html/ninja
+
+cd ninja/
+cp -a src/op5 ./
